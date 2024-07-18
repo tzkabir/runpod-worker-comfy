@@ -52,6 +52,9 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
     && pip3 install --no-cache-dir xformers==0.0.21 \
     && pip3 install -r requirements.txt
 
+# Install ComfyUI dependencies
+RUN pip3 install segment_anything opencv-python
+
 # Install runpod
 RUN pip3 install runpod requests
 

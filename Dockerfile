@@ -24,12 +24,27 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 
+# Create the necessary directories needed for SAM, GroundingDino etc...
+RUN mkdir -p models/sams
+RUN mkdir -p models/grounding-dino
+
+
 ARG SKIP_DEFAULT_MODELS
+
+# Download Custom Nodes 
+RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git custom_nodes/comfyui_controlnet_aux
+RUN git clone https://github.com/cubiq/ComfyUI_essentials.git custom_nodes/ComfyUI_essentials
+RUN git clone https://github.com/storyicon/comfyui_segment_anything.git custom_nodes/comfyui_segment_anything
+
 # Download checkpoints/vae/LoRA to include in image.
-RUN if [ -z "$SKIP_DEFAULT_MODELS" ]; then wget -O models/checkpoints/sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors; fi
-RUN if [ -z "$SKIP_DEFAULT_MODELS" ]; then wget -O models/vae/sdxl_vae.safetensors https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors; fi
-RUN if [ -z "$SKIP_DEFAULT_MODELS" ]; then wget -O models/vae/sdxl-vae-fp16-fix.safetensors https://huggingface.co/madebyollin/sdxl-vae-fp16-fix/resolve/main/sdxl_vae.safetensors; fi
-RUN wget -O models/checkpoints/epicrealism_naturalSinRC1VAE.safetensors https://huggingface.co/philz1337x/epicrealism/resolve/f22dc0ceeed8bd6d64a90b1e684ecd887aa37b40/epicrealism_naturalSinRC1VAE.safetensors
+RUN wget -O models/checkpoints/realisticVisionV60B1_v51HyperInpaintVAE.safetensors https://civitai.com/api/download/models/501286
+RUN wget -O models/sams/mobile_sam.pt https://github.com/ChaoningZhang/MobileSAM/raw/master/weights/mobile_sam.pt
+RUN wget -O models/grounding-dino/GroundingDINO_SwinT_OGC.cfg.py https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/GroundingDINO_SwinT_OGC.cfg.py
+RUN wget -O models/grounding-dino/groundingdino_swint_ogc.pth https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/groundingdino_swint_ogc.pth
+
+# Download ControlNet dependencies
+RUN wget -O models/controlnet/control_v11f1p_sd15_depth.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth
+RUN wget -O models/controlnet/control_v11f1p_sd15_depth.yaml https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.yaml
 
 # Install ComfyUI dependencies
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \

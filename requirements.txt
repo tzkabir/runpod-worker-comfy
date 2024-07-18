@@ -1,1 +1,4 @@
 runpod==1.3.6
+segment_anything
+cv2
+opencv-python

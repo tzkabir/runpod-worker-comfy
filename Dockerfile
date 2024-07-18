@@ -53,7 +53,7 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
     && pip3 install -r requirements.txt
 
 # Install ComfyUI dependencies
-RUN pip3 install segment_anything opencv-python-headless timm addict matplotlib skimage yapf
+RUN pip3 install segment_anything opencv-python==4.7.0.72 timm addict matplotlib scikit-image yapf
 
 # Install runpod
 RUN pip3 install runpod requests

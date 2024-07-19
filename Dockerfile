@@ -28,7 +28,6 @@ WORKDIR /comfyui
 RUN mkdir -p models/sams
 RUN mkdir -p models/grounding-dino
 
-
 ARG SKIP_DEFAULT_MODELS
 
 # Download Custom Nodes 
@@ -47,6 +46,8 @@ RUN wget -O models/grounding-dino/groundingdino_swint_ogc.pth https://huggingfac
 # Download ControlNet dependencies
 RUN wget -O models/controlnet/control_v11f1p_sd15_depth.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth
 RUN wget -O models/controlnet/control_v11f1p_sd15_depth.yaml https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.yaml
+RUN mkdir -p custom_nodes/comfyui_controlnet_aux/ckpts/LiheYoung/Depth-Anything/checkpoints
+RUN wget -O custom_nodes/comfyui_controlnet_aux/ckpts/LiheYoung/Depth-Anything/checkpoints/depth_anything_vitl14.pth https://huggingface.co/spaces/LiheYoung/Depth-Anything/resolve/main/checkpoints/depth_anything_vitl14.pth
 
 # Install ComfyUI dependencies
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \

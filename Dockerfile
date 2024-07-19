@@ -32,10 +32,11 @@ RUN mkdir -p models/grounding-dino
 ARG SKIP_DEFAULT_MODELS
 
 # Download Custom Nodes 
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
+# RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git custom_nodes/comfyui_controlnet_aux
 RUN git clone https://github.com/cubiq/ComfyUI_essentials.git custom_nodes/ComfyUI_essentials
 RUN git clone https://github.com/storyicon/comfyui_segment_anything.git custom_nodes/comfyui_segment_anything
+RUN git clone https://github.com/Acly/comfyui-tooling-nodes.git custom_nodes/comfyui-tooling-nodes
 
 # Download checkpoints/vae/LoRA to include in image.
 RUN wget -O models/checkpoints/realisticVisionV60B1_v51HyperInpaintVAE.safetensors https://civitai.com/api/download/models/501286
@@ -53,7 +54,7 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
     && pip3 install -r requirements.txt
 
 # Install ComfyUI dependencies
-RUN pip3 install segment_anything opencv-python==4.7.0.72 timm addict matplotlib scikit-image yapf
+RUN pip3 install segment_anything opencv-python-headless timm addict matplotlib scikit-image yapf
 
 # Install runpod
 RUN pip3 install runpod requests

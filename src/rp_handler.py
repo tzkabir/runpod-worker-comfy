@@ -233,43 +233,50 @@ def process_output_images(outputs, job_id):
     COMFY_OUTPUT_PATH = os.environ.get("COMFY_OUTPUT_PATH", "/comfyui/output")
 
     output_images = {}
+    images = []
+
+    print("THE OUTPUT ITEMS ARE:")
+    print(outputs.items())
+
+    print("The OUTPUT_IMAGES dict is")
+    print(output_images)
+
 
     for node_id, node_output in outputs.items():
         if "images" in node_output:
             for image in node_output["images"]:
                 output_images = os.path.join(image["subfolder"], image["filename"])
+                local_image_path = f"{COMFY_OUTPUT_PATH}/{output_images}"
+                # expected image output folder
+                print(f"runpod-worker-comfy - {local_image_path}")    
 
-    print(f"runpod-worker-comfy - image generation is done")
+                # The image is in the output folder
+                if os.path.exists(local_image_path):
+                    if os.environ.get("BUCKET_ENDPOINT_URL", False):
+                        # URL to image in AWS S3
+                        imageURL = rp_upload.upload_image(job_id, local_image_path)
+                        #create a dictionary and append to the list
+                        images.append({'filename': image["filename"], 'imageURL': imageURL})
+                        print(
+                            "runpod-worker-comfy - the image was generated and uploaded to AWS S3"
+                        )
+                    else:
+                        # base64 image
+                        image = base64_encode(local_image_path)
+                        print(
+                            "runpod-worker-comfy - the image was generated and converted to base64"
+                        )
 
-    # expected image output folder
-    local_image_path = f"{COMFY_OUTPUT_PATH}/{output_images}"
-
-    print(f"runpod-worker-comfy - {local_image_path}")
-
-    # The image is in the output folder
-    if os.path.exists(local_image_path):
-        if os.environ.get("BUCKET_ENDPOINT_URL", False):
-            # URL to image in AWS S3
-            image = rp_upload.upload_image(job_id, local_image_path)
-            print(
-                "runpod-worker-comfy - the image was generated and uploaded to AWS S3"
-            )
-        else:
-            # base64 image
-            image = base64_encode(local_image_path)
-            print(
-                "runpod-worker-comfy - the image was generated and converted to base64"
-            )
-
+    if len(images) > 0:
         return {
             "status": "success",
-            "message": image,
+            "message": images,
         }
     else:
-        print("runpod-worker-comfy - the image does not exist in the output folder")
+        print("runpod-worker-comfy - the images do not exist in the output folder")
         return {
             "status": "error",
-            "message": f"the image does not exist in the specified output folder: {local_image_path}",
+            "message": f"the image does not exist in the specified output folder",
         }
 
 
@@ -339,7 +346,6 @@ def handler(job):
 
     # Get the generated image and return it as URL in an AWS bucket or as base64
     images_result = process_output_images(history[prompt_id].get("outputs"), job["id"])
-
     result = {**images_result, "refresh_worker": REFRESH_WORKER}
 
     return result

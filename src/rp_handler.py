@@ -299,6 +299,7 @@ def handler(job):
 
     for update_number in range(0, 100):
         runpod.serverless.progress_update(job, f"{update_number}")
+        return {"progress": update_number}
 
     # Make sure that the ComfyUI API is available
     check_server(

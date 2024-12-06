@@ -34,14 +34,15 @@ ARG SKIP_DEFAULT_MODELS
 # RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git custom_nodes/comfyui_controlnet_aux
 RUN git clone https://github.com/cubiq/ComfyUI_essentials.git custom_nodes/ComfyUI_essentials
-RUN git clone https://github.com/storyicon/comfyui_segment_anything.git custom_nodes/comfyui_segment_anything
+# RUN git clone https://github.com/storyicon/comfyui_segment_anything.git custom_nodes/comfyui_segment_anything
 RUN git clone https://github.com/Acly/comfyui-tooling-nodes.git custom_nodes/comfyui-tooling-nodes
+RUN git clone https://github.com/chflame163/ComfyUI_LayerStyle.git custom_nodes/ComfyUI_LayerStyle
 
 # Download checkpoints/vae/LoRA to include in image.
 RUN wget -O models/checkpoints/realisticVisionV60B1_v51HyperInpaintVAE.safetensors https://civitai.com/api/download/models/501286
-RUN wget -O models/sams/mobile_sam.pt https://github.com/ChaoningZhang/MobileSAM/raw/master/weights/mobile_sam.pt
-RUN wget -O models/grounding-dino/GroundingDINO_SwinT_OGC.cfg.py https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/GroundingDINO_SwinT_OGC.cfg.py
-RUN wget -O models/grounding-dino/groundingdino_swint_ogc.pth https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/groundingdino_swint_ogc.pth
+# RUN wget -O models/sams/mobile_sam.pt https://github.com/ChaoningZhang/MobileSAM/raw/master/weights/mobile_sam.pt
+# RUN wget -O models/grounding-dino/GroundingDINO_SwinT_OGC.cfg.py https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/GroundingDINO_SwinT_OGC.cfg.py
+# RUN wget -O models/grounding-dino/groundingdino_swint_ogc.pth https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/groundingdino_swint_ogc.pth
 
 # Download ControlNet dependencies
 RUN wget -O models/controlnet/control_v11f1p_sd15_depth.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth

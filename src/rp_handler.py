@@ -298,9 +298,7 @@ def handler(job):
     images = validated_data.get("images")
 
     for update_number in range(0, 100):
-        runpod.serverless.progress_update(job, {
-            "progress": update_number
-        })
+        runpod.serverless.progress_update(job, f"{update_number}")
 
     # Make sure that the ComfyUI API is available
     check_server(

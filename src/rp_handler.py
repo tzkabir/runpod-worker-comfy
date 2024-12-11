@@ -311,7 +311,7 @@ def handler(job):
         COMFY_API_AVAILABLE_INTERVAL_MS,
     )
 
-    # Added to measure progress from Runpod
+    # Added to measure progress from Runpod - v1.0.2
     for update_number in range(0, 3):
         runpod.serverless.progress_update(job, f"{update_number}")
         time.sleep(5)

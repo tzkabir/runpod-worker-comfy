@@ -311,6 +311,11 @@ def handler(job):
         COMFY_API_AVAILABLE_INTERVAL_MS,
     )
 
+    # Added to measure progress from Runpod
+    for update_number in range(0, 3):
+        runpod.serverless.progress_update(job, f"{update_number}")
+        time.sleep(5)
+
     # Upload images if they exist
     upload_result = upload_images(images)
 
